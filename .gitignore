@@ -106,6 +106,7 @@ Temporary Items
 ### JetBrains template
 /.idea/
 ## Plugin-specific files:
+*.iml
 
 # IntelliJ
 /out/
