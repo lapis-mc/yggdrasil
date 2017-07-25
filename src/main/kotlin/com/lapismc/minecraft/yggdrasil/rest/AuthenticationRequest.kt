@@ -19,6 +19,10 @@ class AuthenticationRequest(val credentials: Credentials, val clientToken: UUID,
 
     /**
      * Serializes the request.
+     * @param serializer Serializer used to transform the request.
+     * @return Serialized data.
      */
-    override fun <T> serialize(serializer: Serializer<T>): T = TODO()
+    override fun <T> serialize(serializer: Serializer<T>): T {
+        return serializer.serializeAuthenticationRequest(this)
+    }
 }

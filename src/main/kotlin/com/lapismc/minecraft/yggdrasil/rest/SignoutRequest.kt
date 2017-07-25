@@ -15,6 +15,10 @@ class SignoutRequest(val credentials: Credentials) : Request() {
 
     /**
      * Serializes the request.
+     * @param serializer Serializer used to transform the request.
+     * @return Serialized data.
      */
-    override fun <T> serialize(serializer: Serializer<T>): T = TODO()
+    override fun <T> serialize(serializer: Serializer<T>): T {
+        return serializer.serializeSignoutRequest(this)
+    }
 }

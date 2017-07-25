@@ -10,6 +10,10 @@ import com.lapismc.minecraft.yggdrasil.rest.serialization.Serializer
 abstract class TokenRequest(val tokenPair: TokenPair) : Request() {
     /**
      * Serializes the request.
+     * @param serializer Serializer used to transform the request.
+     * @return Serialized data.
      */
-    override fun <T> serialize(serializer: Serializer<T>): T = TODO()
+    override fun <T> serialize(serializer: Serializer<T>): T {
+        return serializer.serializeTokenRequest(this)
+    }
 }
