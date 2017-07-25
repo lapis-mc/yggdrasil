@@ -2,6 +2,7 @@ package com.lapismc.minecraft.yggdrasil.rest
 
 import com.lapismc.minecraft.yggdrasil.Agent
 import com.lapismc.minecraft.yggdrasil.Credentials
+import com.lapismc.minecraft.yggdrasil.rest.serialization.Serializer
 import java.util.UUID
 
 /**
@@ -15,4 +16,9 @@ class AuthenticationRequest(val credentials: Credentials, val clientToken: UUID,
      * Sub-path from the base URL that the request is sent to.
      */
     override val endpoint = "/authenticate"
+
+    /**
+     * Serializes the request.
+     */
+    override fun <T> serialize(serializer: Serializer<T>): T = TODO()
 }
