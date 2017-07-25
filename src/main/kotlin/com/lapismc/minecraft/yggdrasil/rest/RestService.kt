@@ -3,6 +3,7 @@ package com.lapismc.minecraft.yggdrasil.rest
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.result.Result
+import com.lapismc.minecraft.yggdrasil.rest.serialization.ErrorResponseDeserializer
 import com.lapismc.minecraft.yggdrasil.rest.serialization.JsonSerializer
 
 /**
@@ -25,7 +26,15 @@ class RestService(private val baseUrl: String) {
         val url  = baseUrl + request.endpoint
         val body = request.serialize(JsonSerializer())
         val httpRequest = Fuel.post(url).header(Pair("Content-Type", "application/json")).body(body)
-        val (_, _, result) = httpRequest.responseObject(responseDeserializer)
-        return result
+        val (_, response, result) = httpRequest.responseObject(responseDeserializer)
+        result.fold(success = {
+            // Return expected object type.
+            return result
+        }, failure = {
+            // Error occurred, response data contains error.
+            // Deserialize the error into something we can use.
+            val error = ErrorResponseDeserializer().deserialize(response.dataStream)
+            return Result.error(error.toException())
+        })
     }
 }
