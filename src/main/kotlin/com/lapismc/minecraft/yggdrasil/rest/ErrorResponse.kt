@@ -11,4 +11,10 @@ class ErrorResponse(val error: String, val message: String, val cause: String? =
      * Indicates whether the request was successful.
      */
     override val successful = false
+
+    /**
+     * Converts the error to a logical exception.
+     * @return Exception containing the error information.
+     */
+    fun toException(): Exception = TODO()
 }

@@ -1,12 +1,13 @@
 package com.lapismc.minecraft.yggdrasil
 
+import com.lapismc.minecraft.yggdrasil.rest.RestService
 import java.util.*
 
 /**
  * Authentication service that connects to a RESTful web application.
  * @param baseUrl URL of the REST application handling authentication.
  */
-class WebAuthenticationService(private val baseUrl: String) : AuthenticationService {
+class WebAuthenticationService(baseUrl: String) : AuthenticationService {
     companion object {
         /**
          * Base URL for the official authentication server.
@@ -18,6 +19,8 @@ class WebAuthenticationService(private val baseUrl: String) : AuthenticationServ
          */
         fun official() = WebAuthenticationService(OFFICIAL_BASE_URL)
     }
+
+    private val restService: RestService = RestService(baseUrl)
 
     /**
      * Attempts to authenticate with a user's credentials.
@@ -53,4 +56,5 @@ class WebAuthenticationService(private val baseUrl: String) : AuthenticationServ
      * @param tokenPair Client and access token used during authentication.
      */
     override fun invalidate(tokenPair: TokenPair) = TODO()
+
 }
