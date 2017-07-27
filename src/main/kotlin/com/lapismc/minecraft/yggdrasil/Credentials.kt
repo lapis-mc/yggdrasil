@@ -28,7 +28,7 @@ data class Credentials(val username: String, val password: String) {
         private fun sha256Digest(value: String): String {
             val digest = MessageDigest.getInstance("SHA-256")
             val hashBytes = digest.digest(value.toByteArray())
-            return printHexBinary(hashBytes)
+            return printHexBinary(hashBytes).take(16).toLowerCase() + "..."
         }
     }
 }
