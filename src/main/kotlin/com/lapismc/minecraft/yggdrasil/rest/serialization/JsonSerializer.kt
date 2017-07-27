@@ -1,10 +1,10 @@
 package com.lapismc.minecraft.yggdrasil.rest.serialization
 
 import com.github.salomonbrys.kotson.jsonObject
-import com.github.salomonbrys.kotson.string
 import com.google.gson.JsonObject
 import com.lapismc.minecraft.yggdrasil.Agent
 import com.lapismc.minecraft.yggdrasil.rest.*
+import java.util.*
 
 /**
  * Serializer for generating JSON data from request objects.
@@ -16,7 +16,7 @@ class JsonSerializer : Serializer<String> {
      * @return Serialized data.
      */
     override fun serializeAuthenticationRequest(request: AuthenticationRequest): String {
-        return createAuthenticationRequestJson(request).string
+        return createAuthenticationRequestJson(request).toString()
     }
 
     /**
@@ -25,7 +25,7 @@ class JsonSerializer : Serializer<String> {
      * @return Serialized data.
      */
     override fun serializeTokenRequest(request: TokenRequest): String {
-        return createTokenRequestJson(request).string
+        return createTokenRequestJson(request).toString()
     }
 
     /**
@@ -34,7 +34,7 @@ class JsonSerializer : Serializer<String> {
      * @return Serialized data.
      */
     override fun serializeSignoutRequest(request: SignoutRequest): String {
-        return createSignoutRequestJson(request).string
+        return createSignoutRequestJson(request).toString()
     }
 
     /**
@@ -47,7 +47,7 @@ class JsonSerializer : Serializer<String> {
                 "agent"       to createAgentJson(request.agent),
                 "username"    to request.credentials.username,
                 "password"    to request.credentials.password,
-                "clientToken" to request.clientToken
+                "clientToken" to request.clientToken.toJson()
         )
     }
 
@@ -70,8 +70,8 @@ class JsonSerializer : Serializer<String> {
      */
     private fun createTokenRequestJson(request: TokenRequest): JsonObject {
         return jsonObject(
-                "accessToken" to request.tokenPair.accessToken,
-                "clientToken" to request.tokenPair.clientToken
+                "accessToken" to request.tokenPair.accessToken.toJson(),
+                "clientToken" to request.tokenPair.clientToken.toJson()
         )
     }
 
@@ -86,4 +86,10 @@ class JsonSerializer : Serializer<String> {
                 "password" to request.credentials.password
         )
     }
+
+    /**
+     * Converts a UUID to JSON format.
+     * @return JSON string containing a UUID.
+     */
+    private fun UUID.toJson() = this.toString().filter { it != '-' }
 }

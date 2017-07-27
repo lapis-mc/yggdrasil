@@ -87,10 +87,17 @@ class AuthenticationResponseDeserializer : ResponseDeserializable<Authentication
         return Profile(id, name, legacy)
     }
 
+    private val uuidDashlessRegex =
+            Regex("(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{12})")
+
     /**
      * Utility method for converting JSON UUID values to UUID instances.
      * @param element JSON element containing the UUID.
      * @return Extracted UUID value.
      */
-    private fun deserializeUUID(element: JsonElement) = UUID.fromString(element.string)
+    private fun deserializeUUID(element: JsonElement): UUID {
+        val jsonStr = element.string
+        val uuidStr = jsonStr.replaceFirst(uuidDashlessRegex, "$1-$2-$3-$4-$5")
+        return UUID.fromString(uuidStr)
+    }
 }
