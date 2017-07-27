@@ -4,22 +4,21 @@ import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.salomonbrys.kotson.*
 import com.google.gson.GsonBuilder
 import com.lapismc.minecraft.yggdrasil.rest.ErrorResponse
-import java.io.InputStream
 
 class ErrorResponseDeserializer : ResponseDeserializable<ErrorResponse> {
     /**
      * Read error response information.
-     * @param reader JSON reader used to get error information.
+     * @param content Serialized JSON data to deserialize.
      * @return Constructed error response.
      */
-    override fun deserialize(inputStream: InputStream): ErrorResponse {
+    override fun deserialize(content: String): ErrorResponse {
         val gson = GsonBuilder()
                 .registerTypeAdapter<ErrorResponse> {
                     deserialize { readErrorResponse(it) }
                     serialize { jsonNull } // Empty, unused serializer to make Kotson happy.
                 }
                 .create()
-        return gson.fromJson<ErrorResponse>(inputStream.bufferedReader())
+        return gson.fromJson<ErrorResponse>(content)
     }
 
     /**

@@ -33,7 +33,8 @@ class RestService(private val baseUrl: String) {
         }, failure = {
             // Error occurred, response data contains error.
             // Deserialize the error into something we can use.
-            val error = ErrorResponseDeserializer().deserialize(response.dataStream)
+            val content = String(response.data)
+            val error   = ErrorResponseDeserializer().deserialize(content)
             return Result.error(error.toException())
         })
     }
@@ -59,7 +60,8 @@ class RestService(private val baseUrl: String) {
         }, failure = {
             // Error occurred, response data contains error.
             // Deserialize the error into something we can use.
-            val error = ErrorResponseDeserializer().deserialize(response.dataStream)
+            val content = String(response.data)
+            val error   = ErrorResponseDeserializer().deserialize(content)
             return Result.error(error.toException())
         })
     }
