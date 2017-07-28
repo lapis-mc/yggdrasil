@@ -1,7 +1,6 @@
 package com.lapismc.minecraft.yggdrasil
 
 import com.github.kittinunf.result.Result
-import com.lapismc.minecraft.yggdrasil.rest.AuthenticationResponse
 import java.util.UUID
 
 /**
@@ -14,29 +13,29 @@ interface AuthenticationService {
      * @param clientToken Token used to uniquely identify the client.
      * @param agent Game to authenticate for.
      * @return Result of the authentication.
-     *  Upon success, an [AuthenticationResponse] is returned.
+     *  Upon success, a [Session] is returned.
      *  If an error occurred, exception information about the problem is returned.
      */
-    fun authenticate(credentials: Credentials, clientToken: UUID, agent: Agent = Agent.minecraft()): Result<AuthenticationResponse, Exception>
+    fun authenticate(credentials: Credentials, clientToken: UUID, agent: Agent = Agent.minecraft()): Result<Session, Exception>
 
     /**
      * Renews the access token given during authentication.
      * This allows continued use of the token pair.
-     * @param tokenPair Client and access token used during authentication.
+     * @param session Session acquired during authentication or refresh.
      * @return Result of the refresh.
-     *  Upon success, an [AuthenticationResponse] is returned.
+     *  Upon success, a [Session] is returned.
      *  If an error occurred, exception information about the problem is returned.
      */
-    fun refresh(tokenPair: TokenPair): Result<AuthenticationResponse, Exception>
+    fun refresh(session: Session): Result<Session, Exception>
 
     /**
      * Checks whether an access token is still usable.
-     * @param tokenPair Client and access token used during authentication.
+     * @param session Session acquired during authentication or refresh.
      * @return Result of the validation.
      *  Upon success, a boolean is returned indicating whether the token pair is valid.
      *  If an error occurred, exception information about the problem is returned.
      */
-    fun validate(tokenPair: TokenPair): Result<Boolean, Exception>
+    fun validate(session: Session): Result<Boolean, Exception>
 
     /**
      * Invalidates all access tokens.
@@ -51,10 +50,10 @@ interface AuthenticationService {
     /**
      * Makes an access token unusable.
      * The user must re-authenticate to use the same client.
-     * @param tokenPair Client and access token used during authentication.
+     * @param session Session acquired during authentication or refresh.
      * @return Result of the invalidation.
      *  Upon success, a boolean is returned indicating whether the token pair was invalidated.
      *  If an error occurred, exception information about the problem is returned.
      */
-    fun invalidate(tokenPair: TokenPair): Result<Boolean, Exception>
+    fun invalidate(session: Session): Result<Boolean, Exception>
 }
